@@ -10,7 +10,7 @@
 
 ## Code Features
 
-> * Networking
+* Networking
 * Concurrent Programming
 * Strategy Design Pattern
 * Factory Design Pattern
