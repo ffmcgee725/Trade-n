@@ -24,7 +24,6 @@ public class ClientHandler implements Runnable {
     public ClientHandler(Socket socket) {
         this.accountManager = new AccountManager();
         accounts = accountManager.getAccounts();
-        accounts = new HashSet<>();
         this.socket = socket;
         this.menu = new Menu(socket);
     }
