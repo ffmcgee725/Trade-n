@@ -5,8 +5,6 @@ import org.academiadecodigo.codezillas.trade_n.server.Server;
 
 import java.io.IOException;
 
-import org.academiadecodigo.codezillas.trade_n.menu.mainmenu.Menu;
-
 public class StartServer {
 
     private static final int DEFAULT_PORT = 8000;
@@ -24,8 +22,5 @@ public class StartServer {
         } catch (NumberFormatException e) {
             System.err.println("Error port must be a valid number: " + args[0]);
         }
-
-        Menu menu = new Menu();
-        menu.start();
     }
 }

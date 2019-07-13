@@ -1,4 +1,4 @@
-package org.academiadecodigo.codezillas.trade_n.client;
+package org.academiadecodigo.codezillas.trade_n.account;
 
 import org.academiadecodigo.codezillas.trade_n.currency.CurrencyType;
 

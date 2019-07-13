@@ -1,7 +1,8 @@
 package org.academiadecodigo.codezillas.trade_n.server;
 
-import org.academiadecodigo.codezillas.trade_n.client.Account;
-import org.academiadecodigo.codezillas.trade_n.client.AccountManager;
+import org.academiadecodigo.codezillas.trade_n.account.Account;
+import org.academiadecodigo.codezillas.trade_n.account.AccountManager;
+import org.academiadecodigo.codezillas.trade_n.menu.mainmenu.Menu;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,11 +11,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.HashSet;
 
-public class ClientHandler implements Runnable{
+public class ClientHandler implements Runnable {
 
     private Socket socket;
     private HashSet<Account> accounts;
     private AccountManager accountManager;
+    private Menu menu;
 
     private PrintWriter out;
     private BufferedReader in;
@@ -24,6 +26,7 @@ public class ClientHandler implements Runnable{
         accounts = accountManager.getAccounts();
         accounts = new HashSet<>();
         this.socket = socket;
+        this.menu = new Menu(socket);
     }
 
     @Override
@@ -33,15 +36,16 @@ public class ClientHandler implements Runnable{
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             while (!socket.isClosed()) {
-                listen(in);
+                menu.start();
             }
 
         } catch (IOException e) {
-            System.err.println("Error handling client: " + e.getMessage());
+            System.err.println("Error handling account: " + e.getMessage());
         }
     }
 
     private void listen(BufferedReader in) throws IOException {
+
         String message = in.readLine();
 
         if (message == null) {

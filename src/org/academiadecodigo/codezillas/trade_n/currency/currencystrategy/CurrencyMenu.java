@@ -1,6 +1,6 @@
 package org.academiadecodigo.codezillas.trade_n.currency.currencystrategy;
 
-import org.academiadecodigo.codezillas.trade_n.client.AccountManager;
+import org.academiadecodigo.codezillas.trade_n.account.AccountManager;
 import org.academiadecodigo.codezillas.trade_n.server.ClientHandler;
 
 public class CurrencyMenu {
