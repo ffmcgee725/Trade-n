@@ -24,11 +24,16 @@ public class Account {
         return id;
     }
 
-    public void deposit(int amount) {
+    public void deposit(double amount) {
         balance += amount;
     }
 
     public void transfer(int amount) {
         balance -= amount;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + " | " + balance + " " + currencyType.toString();
     }
 }

@@ -2,7 +2,7 @@ package org.academiadecodigo.codezillas.trade_n.menu.clientmenu.clientmenustrate
 
 public enum ClientMenuType {
     OPENACCOUNT("Open account", new OperationOpenAccount()),
-    SELECTACCOUNT("Select account", new OperationSelectAccount()),
+    DEPOSIT("Deposit", new OperationDeposit()),
     PAY("Pay", new OperationPay());
 
     private String description;

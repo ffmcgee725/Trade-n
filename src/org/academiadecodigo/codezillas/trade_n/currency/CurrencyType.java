@@ -19,4 +19,9 @@ public enum CurrencyType {
     public String getCode(){
         return this.code;
     }
+
+    @Override
+    public String toString() {
+        return currencyName;
+    }
 }

@@ -46,7 +46,7 @@ public class ClientHandler implements Runnable {
     public Prompt getPrompt() {
         Prompt prompt = null;
         try {
-            prompt = new Prompt(socket.getInputStream(),new PrintStream(socket.getOutputStream()));
+            prompt = new Prompt(socket.getInputStream(), new PrintStream(socket.getOutputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,8 +61,8 @@ public class ClientHandler implements Runnable {
         return accounts;
     }
 
-    public void deposit(int accountID, int amount) {
-        accountManager.deposit(accountID, amount);
+    public void deposit() {
+        accountManager.deposit(this);
     }
 
     public void transfer(int accountID, int amount) {
@@ -84,5 +84,6 @@ public class ClientHandler implements Runnable {
     public Socket getSocket() {
         return socket;
     }
+
 }
 
