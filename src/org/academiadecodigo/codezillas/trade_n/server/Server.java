@@ -21,19 +21,17 @@ public class Server {
         this.serverSocket = new ServerSocket(port);
         this.exchangeManager = manager;
         this.service = Executors.newCachedThreadPool();
+        clients = new HashMap<>();
     }
 
     public void start() {
 
-        int connections = 0;
-
         while (true) {
-            waitConnection(connections);
-            connections++;
+            waitConnection();
         }
     }
 
-    private void waitConnection(int connections) {
+    private void waitConnection() {
         try {
             Socket clientSocket = serverSocket.accept();
 
@@ -51,7 +49,10 @@ public class Server {
 
         synchronized (clients) {
             for(Map.Entry<Integer, ClientHandler> entry : clients.entrySet()) {
-
+                if (!entry.getValue().getSocket().isBound()) {
+                    continue;
+                }
+                list.append(entry.getKey() + " --> " + entry.getValue());
             }
         }
         return list.toString();
