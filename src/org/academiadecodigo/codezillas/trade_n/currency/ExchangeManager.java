@@ -1,6 +1,5 @@
 package org.academiadecodigo.codezillas.trade_n.currency;
 
-import org.academiadecodigo.codezillas.trade_n.currency.CurrencyType;
 import org.json.JSONObject;
 
 import java.io.IOException;

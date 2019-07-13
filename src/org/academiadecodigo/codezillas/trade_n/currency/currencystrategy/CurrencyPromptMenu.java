@@ -8,7 +8,6 @@ import org.academiadecodigo.bootcamp.scanners.precisiondouble.DoubleInputScanner
 public class CurrencyPromptMenu {
 
     public static int userNumberInput(String message) {
-
         IntegerInputScanner scanner = new IntegerInputScanner();
         scanner.setMessage(message);
 
