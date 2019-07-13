@@ -1,6 +1,7 @@
 package org.academiadecodigo.codezillas.trade_n.server;
 
 import org.academiadecodigo.codezillas.trade_n.client.Account;
+import org.academiadecodigo.codezillas.trade_n.client.AccountManager;
 
 import java.net.Socket;
 import java.util.HashSet;
@@ -9,9 +10,11 @@ public class ClientHandler {
 
     private Socket socket;
     private HashSet<Account> accounts;
+    private AccountManager accountManager;
 
-    public ClientHandler() {
-        accounts = new HashSet<>();
+    public ClientHandler(AccountManager accountManager) {
+        this.accountManager = accountManager;
+        accounts = accountManager.getAccounts();
     }
 
     public HashSet<Account> getAccounts() {
@@ -19,19 +22,10 @@ public class ClientHandler {
     }
 
     public void deposit(int accountID, int amount) {
-        for (Account acc : accounts) {
-            if (acc.getId() == accountID) {
-                acc.deposit(amount);
-            }
-        }
+        accountManager.deposit(accountID, amount);
     }
 
     public void transfer(int accountID, int amount) {
-        for (Account acc : accounts) {
-            if (acc.getId() == accountID) {
-                acc.transfer(amount);
-            }
-
-        }
+        accountManager.transfer(accountID, amount);
     }
 }
