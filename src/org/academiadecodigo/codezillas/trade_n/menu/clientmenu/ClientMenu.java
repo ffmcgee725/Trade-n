@@ -2,6 +2,7 @@ package org.academiadecodigo.codezillas.trade_n.menu.clientmenu;
 
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
+import org.academiadecodigo.codezillas.trade_n.menu.clientmenu.clientmenustrategy.ClientMenuType;
 
 public class ClientMenu {
 

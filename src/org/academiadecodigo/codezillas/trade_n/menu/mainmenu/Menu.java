@@ -2,6 +2,7 @@ package org.academiadecodigo.codezillas.trade_n.menu.mainmenu;
 
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
+import org.academiadecodigo.codezillas.trade_n.menu.mainmenu.mainmenustrategy.MenuType;
 
 public class Menu {
 
@@ -18,7 +19,7 @@ public class Menu {
             String[] options = {
                     "Register",
                     "Login",
-                    "Leave"
+                    "Quit"
             };
 
             menuInputScanner = new MenuInputScanner(options);
