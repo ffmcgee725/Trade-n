@@ -28,4 +28,8 @@ public class ClientHandler {
     public void transfer(int accountID, int amount) {
         accountManager.transfer(accountID, amount);
     }
+
+    public void getAccountBalance(int accountID) {
+        accountManager.getAccountBalance(accountID);
+    }
 }

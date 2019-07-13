@@ -13,9 +13,10 @@ public class AccountManager {
         accounts = new HashSet<>();
     }
 
-    public void makeAccount(CurrencyType currencyType) {
+    public Account makeAccount(CurrencyType currencyType) {
         Account account = new Account(currencyType);
         accounts.add(account);
+        return account;
     }
 
     public HashSet<Account> getAccounts() {
@@ -36,5 +37,14 @@ public class AccountManager {
                 acc.transfer(amount);
             }
         }
+    }
+
+    public int getAccountBalance(int accountID) {
+        for (Account acc : accounts) {
+            if (acc.getId() == accountID) {
+                return acc.getBalance();
+            }
+        }
+        return 0;
     }
 }
