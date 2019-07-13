@@ -1,6 +1,7 @@
 package org.academiadecodigo.codezillas.trade_n.server;
 
 import org.academiadecodigo.codezillas.trade_n.client.Account;
+import org.academiadecodigo.codezillas.trade_n.client.AccountManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,10 +14,14 @@ public class ClientHandler implements Runnable{
 
     private Socket socket;
     private HashSet<Account> accounts;
+    private AccountManager accountManager;
+
     private PrintWriter out;
     private BufferedReader in;
 
     public ClientHandler(Socket socket) {
+        this.accountManager = new AccountManager();
+        accounts = accountManager.getAccounts();
         accounts = new HashSet<>();
         this.socket = socket;
     }
@@ -54,24 +59,19 @@ public class ClientHandler implements Runnable{
     }
 
     public void deposit(int accountID, int amount) {
-        for (Account acc : accounts) {
-            if (acc.getId() == accountID) {
-                acc.deposit(amount);
-            }
-        }
+        accountManager.deposit(accountID, amount);
     }
 
     public void transfer(int accountID, int amount) {
-        for (Account acc : accounts) {
-            if (acc.getId() == accountID) {
-                acc.transfer(amount);
-            }
+        accountManager.transfer(accountID, amount);
+    }
 
-        }
+    public void getAccountBalance(int accountID) {
+        accountManager.getAccountBalance(accountID);
     }
 
     public Socket getSocket() {
         return socket;
     }
-
 }
+
