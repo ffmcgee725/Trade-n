@@ -1,4 +1,4 @@
-package org.academiadecodigo.codezillas.trade_n.menu.mainmenu;
+package org.academiadecodigo.codezillas.trade_n.menu.mainmenu.mainmenustrategy;
 
 public class OperationRegister implements MenuBehaviour{
     @Override
