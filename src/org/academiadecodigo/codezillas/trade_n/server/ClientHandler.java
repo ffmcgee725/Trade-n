@@ -21,23 +21,26 @@ public class ClientHandler implements Runnable {
     private int clientID;
 
     public ClientHandler(int clientID, Socket socket) {
-        this.accountManager = new AccountManager();
-        accounts = accountManager.getAccounts();
         this.clientID = clientID;
         this.socket = socket;
-        prompt = getPrompt();
-        clientMenu = new ClientMenu(this);
-        this.menu = new Menu(prompt,clientMenu);
     }
 
     @Override
     public void run() {
-         menu.start();
-         clientmenu();
+        init();
+        menu.start();
     }
 
-    public void clientmenu(){
+    public AccountManager getAccountManager() {
+        return accountManager;
+    }
 
+    private void init() {
+        prompt = getPrompt();
+        this.accountManager = new AccountManager(prompt);
+        accounts = accountManager.getAccounts();
+        clientMenu = new ClientMenu(this);
+        this.menu = new Menu(prompt, clientMenu);
     }
 
     public Prompt getPrompt() {
@@ -68,6 +71,10 @@ public class ClientHandler implements Runnable {
 
     public void getAccountBalance(int accountID) {
         accountManager.getAccountBalance(accountID);
+    }
+
+    public void openAccount() {
+        accountManager.makeAccount(accountManager.getCurrencyMenu().chooseCurrency());
     }
 
     public int getClientID() {

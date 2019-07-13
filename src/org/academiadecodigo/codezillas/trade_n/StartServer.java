@@ -12,9 +12,7 @@ public class StartServer {
     public static void main(String[] args) {
 
         try {
-            ExchangeManager exchangeManager = new ExchangeManager();
-            Server server = new Server (args.length > 0 ? Integer.valueOf(args[0]) :
-                    DEFAULT_PORT, exchangeManager);
+            Server server = new Server(args.length > 0 ? Integer.valueOf(args[0]) : DEFAULT_PORT);
 
             server.start();
         } catch (IOException e) {

@@ -1,6 +1,7 @@
 package org.academiadecodigo.codezillas.trade_n.menu.clientmenu.clientmenustrategy;
 
-public interface ClientMenuStrategy {
+import org.academiadecodigo.codezillas.trade_n.server.ClientHandler;
 
-    void doOperation();
+public interface ClientMenuStrategy {
+    void doOperation(ClientHandler clientHandler);
 }

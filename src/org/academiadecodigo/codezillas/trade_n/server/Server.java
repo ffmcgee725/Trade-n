@@ -17,11 +17,9 @@ public class Server {
     private static ConcurrentHashMap<Integer, ClientHandler> clients;
     private ServerSocket serverSocket;
     private ExecutorService service;
-    private ExchangeManager exchangeManager;
 
-    public Server(int port, ExchangeManager manager) throws IOException {
+    public Server(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
-        this.exchangeManager = manager;
         this.service = Executors.newCachedThreadPool();
         clients = new ConcurrentHashMap<>();
     }
@@ -60,7 +58,7 @@ public class Server {
         }
 
         public static String loggedClients() {
-            return (Thread.activeCount()-2)+"\n";
+            return "Current client: " + (Thread.activeCount()-2)+"\n";
         }
     }
 

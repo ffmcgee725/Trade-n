@@ -1,37 +1,39 @@
 package org.academiadecodigo.codezillas.trade_n.menu.clientmenu;
 
-import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 import org.academiadecodigo.codezillas.trade_n.menu.clientmenu.clientmenustrategy.ClientMenuType;
 import org.academiadecodigo.codezillas.trade_n.server.ClientHandler;
-
-import java.net.Socket;
 
 public class ClientMenu {
 
     private ClientHandler clientHandler;
     private MenuInputScanner scanner;
 
-    public ClientMenu(ClientHandler clientHandler){
+    public ClientMenu(ClientHandler clientHandler) {
         this.clientHandler = clientHandler;
     }
 
-    public void start(){
+    public void start() {
+        String[] options = new String[ClientMenuType.values().length + 1];
+        for (int i = 0; i < ClientMenuType.values().length; i++) {
+            options[i] = ClientMenuType.values()[i].getDescription();
+        }
+        options[options.length - 1] = "Logout";
 
-        String[] options ={"OpenAccount","Pay","Select Account","Go Back"};
         scanner = new MenuInputScanner(options);
-        scanner.setMessage("Welcome Client: "+clientHandler.getClientID()+"\nSelect your option!");
+        scanner.setMessage("Welcome Client: " + clientHandler.getClientID() + "\n" + "Select your option!");
 
-        while (true){
-            int choice = clientHandler.getPrompt().getUserInput(scanner)-1;
+        while (true) {
+            int choice = clientHandler.getPrompt().getUserInput(scanner);
 
-            if (choice == 3){
+            if (choice == options.length) {
                 return;
             }
 
-            ClientMenuType.values()[choice].clientMenuStrategy.doOperation();
+            ClientMenuType.values()[choice - 1].getClientMenuStrategy().doOperation(clientHandler);
         }
     }
+
     public ClientHandler getClientHandler() {
         return clientHandler;
     }

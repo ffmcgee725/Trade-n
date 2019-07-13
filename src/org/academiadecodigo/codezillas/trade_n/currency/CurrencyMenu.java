@@ -1,38 +1,26 @@
 package org.academiadecodigo.codezillas.trade_n.currency;
 
-import org.academiadecodigo.codezillas.trade_n.account.AccountManager;
-import org.academiadecodigo.codezillas.trade_n.currency.currencystrategy.BitcoinStrategy;
-import org.academiadecodigo.codezillas.trade_n.currency.currencystrategy.CurrencyHandler;
-import org.academiadecodigo.codezillas.trade_n.currency.currencystrategy.CurrencyPromptMenu;
-import org.academiadecodigo.codezillas.trade_n.currency.currencystrategy.EuroStrategy;
-import org.academiadecodigo.codezillas.trade_n.server.ClientHandler;
+import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 
 public class CurrencyMenu {
 
-    private AccountManager accountManager;
-    private ClientHandler clientHandler;
-    private CurrencyHandler currencyHandler;
+    private Prompt prompt;
 
-    public CurrencyMenu(AccountManager accountManager, ClientHandler clientHandler) {
-        this.accountManager = accountManager;
-        this.clientHandler = clientHandler;
-
+    public CurrencyMenu(Prompt prompt) {
+        this.prompt = prompt;
     }
 
-    public void init() {
-
-        int selectedOption;
-        double value;
-
+    public CurrencyType chooseCurrency() {
         String[] options = new String[CurrencyType.values().length];
         for (int i = 0; i < CurrencyType.values().length; i++) {
             options[i] = CurrencyType.values()[i].getCurrencyName();
         }
 
-        int customerId = CurrencyPromptMenu.userOptionInput("Please choose currency: ", options);
+        MenuInputScanner menu = new MenuInputScanner(options);
+        menu.setMessage("Please choose currency: ");
 
-        while ((selectedOption = CurrencyPromptMenu.userOptionInput()) != 5) {
-            CurrencyType.values()[selectedOption - 1].getCurrencyHandler().execute(clientHandler);
-        }
+        int currency = prompt.getUserInput(menu);
+        return CurrencyType.values()[currency - 1];
     }
 }
