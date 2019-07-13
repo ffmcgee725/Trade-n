@@ -1,27 +1,29 @@
 package org.academiadecodigo.codezillas.trade_n.server;
 
+import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
 import org.academiadecodigo.codezillas.trade_n.currency.ExchangeManager;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
 
+    private static ConcurrentHashMap<Integer, ClientHandler> clients;
     private ServerSocket serverSocket;
     private ExecutorService service;
-    private HashMap<Integer, ClientHandler> clients;
     private ExchangeManager exchangeManager;
 
     public Server(int port, ExchangeManager manager) throws IOException {
         this.serverSocket = new ServerSocket(port);
         this.exchangeManager = manager;
         this.service = Executors.newCachedThreadPool();
-        clients = new HashMap<>();
+        clients = new ConcurrentHashMap<>();
     }
 
     public void start() {
@@ -35,30 +37,31 @@ public class Server {
         try {
             Socket clientSocket = serverSocket.accept();
 
-            ClientHandler clientHandler = new ClientHandler(clientSocket);
+            ClientHandler clientHandler = new ClientHandler(clients.size(), clientSocket);
             service.submit(clientHandler);
-            clients.put(clients.size(), clientHandler);
 
         } catch (IOException e) {
             System.err.println("Error establishing connection: " + e.getMessage());
         }
     }
 
-    public String loggedClients() {
-        StringBuilder list = new StringBuilder("Connected Clients:\n");
+    public static class ClientManager{
 
-        synchronized (clients) {
-            for(Map.Entry<Integer, ClientHandler> entry : clients.entrySet()) {
-                if (!entry.getValue().getSocket().isBound()) {
-                    continue;
-                }
-                list.append(entry.getKey() + " --> " + entry.getValue());
-            }
+        public static boolean logIn(Prompt prompt){
+            IntegerInputScanner integerInputScanner = new IntegerInputScanner();
+            integerInputScanner.setMessage("Enter your Customer number: ");
+
+            return clients.containsKey(prompt.getUserInput(integerInputScanner));
         }
-        return list.toString();
+
+        public static void register(ClientHandler clientHandler){
+            clients.put(clients.size()+1,clientHandler);
+            clientHandler.setClientID(clients.size());
+        }
+
+        public static String loggedClients() {
+            return (Thread.activeCount()-2)+"\n";
+        }
     }
-
-
-
 
 }
