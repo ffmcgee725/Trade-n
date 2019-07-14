@@ -2,10 +2,10 @@ package org.academiadecodigo.codezillas.trade_n.menu.clientmenu.clientmenustrate
 
 import org.academiadecodigo.codezillas.trade_n.server.ClientHandler;
 
-class OperationOpenAccount implements ClientMenuStrategy {
+public class OperationTransfer implements ClientMenuStrategy {
 
     @Override
     public void doOperation(ClientHandler clientHandler) {
-        clientHandler.openAccount();
+        clientHandler.payment();
     }
 }

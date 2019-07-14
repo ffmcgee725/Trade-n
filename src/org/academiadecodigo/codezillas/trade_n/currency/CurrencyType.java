@@ -1,13 +1,14 @@
 package org.academiadecodigo.codezillas.trade_n.currency;
 
 public enum CurrencyType {
+
     BITCOIN("Bitcoin", "BTC"),
     EURO("Euro", "EUR");
 
     private String currencyName;
     private String code;
 
-    CurrencyType(String currencyName, String code){
+    CurrencyType(String currencyName, String code) {
         this.currencyName = currencyName;
         this.code = code;
     }
@@ -16,7 +17,12 @@ public enum CurrencyType {
         return currencyName;
     }
 
-    public String getCode(){
+    public String getCode() {
         return this.code;
+    }
+
+    @Override
+    public String toString() {
+        return currencyName;
     }
 }

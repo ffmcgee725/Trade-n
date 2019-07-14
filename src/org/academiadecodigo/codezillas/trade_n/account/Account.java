@@ -8,27 +8,36 @@ public class Account {
 
     private CurrencyType currencyType;
     private final int id;
-    private int balance;
+    private double balance;
 
-    public Account(CurrencyType currencyType) {
+    Account(CurrencyType currencyType) {
         numberOfAccounts++;
         id = numberOfAccounts;
         this.currencyType = currencyType;
     }
 
-    public int getBalance() {
+    double getBalance() {
         return balance;
     }
 
-    public int getId() {
+    int getId() {
         return id;
     }
 
-    public void deposit(int amount) {
+    public CurrencyType getCurrencyType() {
+        return currencyType;
+    }
+
+    public void deposit(double amount) {
         balance += amount;
     }
 
-    public void transfer(int amount) {
+    void withdraw(double amount) {
         balance -= amount;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + " | " + balance + " " + currencyType.toString();
     }
 }
