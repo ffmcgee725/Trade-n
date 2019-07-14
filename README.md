@@ -17,4 +17,4 @@
 
 ## Installation
 
-> In progress!
+> You can compile our app using the build.xml file provided with the source code
