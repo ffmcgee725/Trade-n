@@ -3,7 +3,10 @@ package org.academiadecodigo.codezillas.trade_n.menu.clientmenu.clientmenustrate
 public enum ClientMenuType {
     OPENACCOUNT("Open account", new OperationOpenAccount()),
     DEPOSIT("Deposit", new OperationDeposit()),
-    PAY("Pay", new OperationPay());
+    EXCHANGE("Exchange", new OperationExchange()),
+    SETDEFAULT("Set Default Account",new OperationSetDefaultAccount()),
+    BALANCE("Balance",new OperationGetBalance()),
+    TRANSFER("Transfer",new OperationTransfer());
 
     private String description;
     private ClientMenuStrategy clientMenuStrategy;

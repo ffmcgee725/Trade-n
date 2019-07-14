@@ -1,6 +1,7 @@
 package org.academiadecodigo.codezillas.trade_n.server;
 
 import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.bootcamp.scanners.string.PasswordInputScanner;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.codezillas.trade_n.menu.mainmenu.Menu;
 
@@ -49,8 +50,9 @@ public class RegisterManager implements Runnable {
             return;
         }
 
-        stringInputScanner.setMessage("Introduze your password: ");
-        String password = prompt.getUserInput(stringInputScanner);
+        PasswordInputScanner passwordInputScanner = new PasswordInputScanner();
+        passwordInputScanner.setMessage("Introduze your password: ");
+        String password = prompt.getUserInput(passwordInputScanner);
 
         if (registers.get(username).getPassword().equals(password)){
             printWriter.println("Login Sucessfull!");
@@ -70,11 +72,12 @@ public class RegisterManager implements Runnable {
             return;
         }
 
-        stringInputScanner.setMessage("Introduze your password: ");
-        String password = prompt.getUserInput(stringInputScanner);
+        PasswordInputScanner passwordInputScanner = new PasswordInputScanner();
+        passwordInputScanner.setMessage("Introduce your password: ");
+        String password = prompt.getUserInput(passwordInputScanner);
 
         registers.put(username,new Register(username,password,socket));
-        printWriter.println("Register Sucessfull!");
+        printWriter.println("Register Successful!");
         printWriter.println("Welcome to TRADE-N!");
 
         registers.get(username).getClientHandler().setSocket(socket);
@@ -87,6 +90,10 @@ public class RegisterManager implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ConcurrentHashMap<String, Register> getRegisters() {
+        return registers;
     }
 
     public static void setRegisters(ConcurrentHashMap<String, Register> registers) {

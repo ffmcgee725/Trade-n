@@ -4,13 +4,12 @@ import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.codezillas.trade_n.account.Account;
 import org.academiadecodigo.codezillas.trade_n.account.AccountManager;
 import org.academiadecodigo.codezillas.trade_n.menu.clientmenu.ClientMenu;
-import org.academiadecodigo.codezillas.trade_n.menu.mainmenu.Menu;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.HashSet;
 
-public class ClientHandler{
+public class ClientHandler {
 
     private Socket socket;
     private HashSet<Account> accounts;
@@ -18,6 +17,7 @@ public class ClientHandler{
     private Prompt prompt;
     private ClientMenu clientMenu;
     private String username;
+    private Account defaultAccount;
 
     public ClientHandler(String username,Socket socket) {
         this.username = username;
@@ -45,7 +45,7 @@ public class ClientHandler{
     public Prompt getPrompt() {
         Prompt prompt = null;
         try {
-            prompt = new Prompt(socket.getInputStream(), new PrintStream(socket.getOutputStream()));
+            prompt = new Prompt(socket.getInputStream(), new PrintStream(socket.getOutputStream(),true));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,23 +61,48 @@ public class ClientHandler{
     }
 
     public void deposit() {
-        accountManager.deposit(this);
+        accountManager.deposit(getPrintWriter());
     }
 
-    public void transfer(int accountID, int amount) {
-        accountManager.transfer(accountID, amount);
+    public void transfer() {
+        accountManager.transfer(getPrintWriter());
     }
 
-    public void getAccountBalance(int accountID) {
-        accountManager.getAccountBalance(accountID);
+    public PrintWriter getPrintWriter(){
+        try {
+            return new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void setDefaultAccount(Account defaultAccount) {
+        this.defaultAccount = defaultAccount;
+    }
+
+    public void changeDefaultAccount(){
+        defaultAccount = accountManager.selectAccount();
+    }
+
+    public void getAccountBalance() {
+        accountManager.getAccountBalance(getPrintWriter());
     }
 
     public void openAccount() {
-        accountManager.makeAccount(accountManager.getCurrencyMenu().chooseCurrency());
+        accountManager.makeAccount(getPrintWriter(), accountManager.getCurrencyMenu().chooseCurrency(),this);
     }
 
     public Socket getSocket() {
         return socket;
+    }
+
+    public Account getDefaultAccount() {
+        return defaultAccount;
+    }
+
+    public void payment(){
+        Server.transfer(this);
     }
 
 }

@@ -2,10 +2,9 @@ package org.academiadecodigo.codezillas.trade_n.menu.clientmenu.clientmenustrate
 
 import org.academiadecodigo.codezillas.trade_n.server.ClientHandler;
 
-class OperationDeposit implements ClientMenuStrategy {
+public class OperationSetDefaultAccount implements ClientMenuStrategy{
     @Override
     public void doOperation(ClientHandler clientHandler) {
-
-        clientHandler.deposit();
+        clientHandler.changeDefaultAccount();
     }
 }
