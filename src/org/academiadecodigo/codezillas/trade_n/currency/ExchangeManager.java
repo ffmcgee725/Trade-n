@@ -11,7 +11,9 @@ import java.net.http.HttpResponse;
 public class ExchangeManager {
 
     public double getRates(CurrencyType base, CurrencyType target) {
-
+        if (base == target) {
+            return 1;
+        }
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.cryptonator.com/api/ticker/" + base.getCode() + "-" + target.getCode()))

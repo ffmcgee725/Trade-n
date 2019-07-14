@@ -76,7 +76,13 @@ public class AccountManager {
         return value;
     }
 
-    public void transfer(PrintWriter printWriter) {
+    public void exchange(PrintWriter printWriter) {
+
+        if (accounts.size() < 2){
+            printWriter.println("You must have at least 2 accounts");
+            return;
+        }
+
         printWriter.println("Select Origin Account");
         Account sourceAccount = selectAccount();
         printWriter.println("Select Destination Account");
@@ -84,7 +90,7 @@ public class AccountManager {
         printWriter.println("Select the Amount to Debit");
 
         if (sourceAccount == null || destinationAccount == null){
-            printWriter.println("Failed to transfer");
+            printWriter.println("Failed to exchange");
             return;
         }
 

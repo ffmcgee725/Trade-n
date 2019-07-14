@@ -39,24 +39,39 @@ public class Server {
         }
     }
 
-    public static void transfer(ClientHandler clientHandler){
-        Account account = clientHandler.getAccountManager().selectAccount();
-       double amount =  clientHandler.getAccountManager().withdraw(account);
-       StringInputScanner stringInputScanner = new StringInputScanner();
-       stringInputScanner.setMessage("Insert username: ");
-       String username = clientHandler.getPrompt().getUserInput(stringInputScanner);
+    public static void transfer(ClientHandler clientHandler) {
 
-       if (!RegisterManager.getRegisters().containsKey(username)){
-           clientHandler.getPrintWriter().println("Failed to transfer!");
-           account.deposit(amount);
-           return;
-       }
+        if (clientHandler.getAccountManager().getAccounts().size() < 1) {
+            clientHandler.getPrintWriter().println("You must have at least 1 account to make transfers");
+            return;
+        }
 
-       amount = clientHandler.getAccountManager().getExchangeManager().getRates(
-               account.getCurrencyType(),
-               RegisterManager.getRegisters().get(username).getClientHandler().getDefaultAccount().getCurrencyType()) * amount;
+        synchronized (clientHandler) {
 
-       RegisterManager.getRegisters().get(username).getClientHandler().getDefaultAccount().deposit(amount);
+            Account account = clientHandler.getAccountManager().selectAccount();
+
+            if (account == null) {
+                return;
+            }
+
+            double amount = clientHandler.getAccountManager().withdraw(account);
+            StringInputScanner stringInputScanner = new StringInputScanner();
+            stringInputScanner.setMessage("Insert username: ");
+            String username = clientHandler.getPrompt().getUserInput(stringInputScanner);
+
+            if (!RegisterManager.getRegisters().containsKey(username)
+                    || (RegisterManager.getRegisters().get(username).getClientHandler().getAccountManager().getAccounts().size() < 1)) {
+
+                clientHandler.getPrintWriter().println("Failed to exchange!");
+                account.deposit(amount);
+                return;
+            }
+
+            amount = clientHandler.getAccountManager().getExchangeManager().getRates(account.getCurrencyType(),
+                    RegisterManager.getRegisters().get(username).getClientHandler().getDefaultAccount().getCurrencyType()) * amount;
+
+            RegisterManager.getRegisters().get(username).getClientHandler().getDefaultAccount().deposit(amount);
+        }
 
     }
 }

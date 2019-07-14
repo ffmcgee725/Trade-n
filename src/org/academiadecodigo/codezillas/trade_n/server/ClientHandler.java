@@ -65,7 +65,7 @@ public class ClientHandler {
     }
 
     public void transfer() {
-        accountManager.transfer(getPrintWriter());
+        accountManager.exchange(getPrintWriter());
     }
 
     public PrintWriter getPrintWriter(){
