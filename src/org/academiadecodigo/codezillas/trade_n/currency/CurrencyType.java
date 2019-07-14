@@ -2,8 +2,11 @@ package org.academiadecodigo.codezillas.trade_n.currency;
 
 public enum CurrencyType {
 
+    EURO("Euro", "EUR"),
+    DOLLAR("Dollar", "USD"),
+    POUND("British Pound", "GBP"),
     BITCOIN("Bitcoin", "BTC"),
-    EURO("Euro", "EUR");
+    ETHEREUM("Ethereum","ETH");
 
     private String currencyName;
     private String code;
