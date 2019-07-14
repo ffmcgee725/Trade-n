@@ -24,7 +24,7 @@ public class DefaultMessages {
     /* INFORMATION MESSAGES */
     public static final String INSERT_USERNAME = "Insert username: ";
 
-    public static final String LOGIN = "Login";
+    public static final String LOGIN = "Login\n";
 
     public static final String LOGOUT = "Logout";
 
@@ -32,15 +32,15 @@ public class DefaultMessages {
 
     public static final String PASSWORD = "Introduce your password: ";
 
-    public static final String SUCCESSFUL_REGISTER = "Register Successful!";
+    public static final String SUCCESSFUL_REGISTER = "\nRegister Successful!";
 
-    public static final String SUCCESSFUL_LOGIN = "Login Sucessful!";
+    public static final String SUCCESSFUL_LOGIN = "\nLogin Sucessful!";
 
-    public static final String WELCOME = "Welcome to TRADE-N!";
+    public static final String WELCOME = "\nWelcome to TRADE-N!";
 
     public static final String WELCOME_2 = "Welcome to Trade-N StartServer!\n\nSelect your option: ";
 
-    public static final String WELCOME_3 = "Welcome Client: ";
+    public static final String WELCOME_3 = "Welcome: ";
 
     public static final String OPTION_SELECTION = "\n" + "Select your option!";
 
