@@ -10,37 +10,36 @@ import java.io.*;
 import java.net.Socket;
 import java.util.HashSet;
 
-public class ClientHandler implements Runnable {
+public class ClientHandler{
 
     private Socket socket;
     private HashSet<Account> accounts;
     private AccountManager accountManager;
     private Prompt prompt;
     private ClientMenu clientMenu;
-    private Menu menu;
-    private int clientID;
+    private String username;
 
-    public ClientHandler(int clientID, Socket socket) {
-        this.clientID = clientID;
+    public ClientHandler(String username,Socket socket) {
+        this.username = username;
         this.socket = socket;
+        prompt = getPrompt();
+        this.accountManager = new AccountManager(prompt);
+        clientMenu = new ClientMenu(this);
     }
 
-    @Override
+    public String getUsername() {
+        return username;
+    }
+
     public void run() {
-        init();
-        menu.start();
+        prompt = getPrompt();
+        accountManager.setPrompt(prompt);
+        accounts = accountManager.getAccounts();
+        clientMenu.start();
     }
 
     public AccountManager getAccountManager() {
         return accountManager;
-    }
-
-    private void init() {
-        prompt = getPrompt();
-        this.accountManager = new AccountManager(prompt);
-        accounts = accountManager.getAccounts();
-        clientMenu = new ClientMenu(this);
-        this.menu = new Menu(prompt, clientMenu);
     }
 
     public Prompt getPrompt() {
@@ -53,8 +52,8 @@ public class ClientHandler implements Runnable {
         return prompt;
     }
 
-    public void setClientID(int clientID) {
-        this.clientID = clientID;
+    public void setSocket(Socket socket) {
+        this.socket = socket;
     }
 
     public HashSet<Account> getAccounts() {
@@ -75,10 +74,6 @@ public class ClientHandler implements Runnable {
 
     public void openAccount() {
         accountManager.makeAccount(accountManager.getCurrencyMenu().chooseCurrency());
-    }
-
-    public int getClientID() {
-        return clientID;
     }
 
     public Socket getSocket() {

@@ -21,7 +21,7 @@ public class ClientMenu {
         options[options.length - 1] = "Logout";
 
         scanner = new MenuInputScanner(options);
-        scanner.setMessage("Welcome Client: " + clientHandler.getClientID() + "\n" + "Select your option!");
+        scanner.setMessage("Welcome Client: " + clientHandler.getUsername() + "\n" + "Select your option!");
 
         while (true) {
             int choice = clientHandler.getPrompt().getUserInput(scanner);
@@ -32,9 +32,5 @@ public class ClientMenu {
 
             ClientMenuType.values()[choice - 1].getClientMenuStrategy().doOperation(clientHandler);
         }
-    }
-
-    public ClientHandler getClientHandler() {
-        return clientHandler;
     }
 }

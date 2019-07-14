@@ -37,6 +37,10 @@ public class AccountManager {
         return account;
     }
 
+    public void setPrompt(Prompt prompt) {
+        this.prompt = prompt;
+    }
+
     public HashSet<Account> getAccounts() {
         return accounts;
     }
