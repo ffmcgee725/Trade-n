@@ -34,23 +34,23 @@ public class DefaultMessages {
 
     public static final String PASSWORD = Color.GREEN + "Introduce your password: " + Color.RESET;
 
-    public static final String SUCCESSFUL_REGISTER = Color.YELLOW + "\nRegister Successful!" + Color.RESET;
+    public static final String SUCCESSFUL_REGISTER = Color.YELLOW + "\nYou've been registered successful!" + Color.RESET;
 
     public static final String SUCCESSFUL_LOGIN = Color.YELLOW + "\nLogin Sucessful!" + Color.RESET;
 
-    public static final String WELCOME = Color.CYAN + "\nWelcome to TRADE-N!" + Color.RESET;
+    public static final String WELCOME = Color.CYAN + "\nWelcome to TRADE-N!".toUpperCase() + Color.RESET;
 
-    public static final String WELCOME_2 = Color.CYAN + "Welcome to Trade-N StartServer!\n" + Color.RESET + "\nSelect your option: ";
+    public static final String WELCOME_2 = Color.CYAN + "Welcome to Trade-N\n".toUpperCase() + Color.RESET + "\nSelect your option: ";
 
     public static final String WELCOME_3 = Color.CYAN + "Welcome " + Color.RESET;
 
     public static final String OPTION_SELECTION = "\n" + "Select your option!";
 
-    public static final String DEPOSIT = Color.GREEN + "Enter the value to deposit: " + Color.GREEN;
+    public static final String DEPOSIT = Color.GREEN + "Enter the amount to deposit: " + Color.GREEN;
 
-    public static final String DEBIT = Color.GREEN + "Enter value to debit: " + Color.GREEN;
+    public static final String DEBIT = Color.GREEN + "Enter the amount to debit: " + Color.GREEN;
 
-    public static final String DEBIT_2 = "Select the Amount to Debit";
+    public static final String DEBIT_2 = "Select the amount to debit";
 
     public static final String BALANCE = Color.YELLOW + "Your balance is: " + Color.YELLOW;
 
