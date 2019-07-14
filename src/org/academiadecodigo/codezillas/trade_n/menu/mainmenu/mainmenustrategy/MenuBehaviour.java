@@ -5,5 +5,5 @@ import org.academiadecodigo.codezillas.trade_n.server.RegisterManager;
 
 public interface MenuBehaviour {
 
-    void doOperation(Prompt prompt, RegisterManager registManager);
+    void doOperation(Prompt prompt, RegisterManager registryManager);
 }

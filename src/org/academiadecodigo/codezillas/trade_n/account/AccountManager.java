@@ -4,6 +4,7 @@ import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
 import org.academiadecodigo.bootcamp.scanners.precisiondouble.DoubleInputScanner;
 import org.academiadecodigo.bootcamp.scanners.precisiondouble.DoubleRangeInputScanner;
+import org.academiadecodigo.codezillas.trade_n.DefaultMessages;
 import org.academiadecodigo.codezillas.trade_n.currency.CurrencyMenu;
 import org.academiadecodigo.codezillas.trade_n.currency.CurrencyType;
 import org.academiadecodigo.codezillas.trade_n.currency.ExchangeManager;
@@ -30,19 +31,21 @@ public class AccountManager {
         return currencyMenu;
     }
 
-    public void makeAccount(PrintWriter printWriter, CurrencyType currencyType,ClientHandler clientHandler) {
+    public void makeAccount(PrintWriter printWriter, CurrencyType currencyType, ClientHandler clientHandler) {
 
         for (Account acc : accounts) {
             if (acc.getCurrencyType() == currencyType) {
-                printWriter.println("You already have an account with that type of currency");
+                printWriter.println(DefaultMessages.CURRENCY_ERROR);
                 return;
             }
         }
 
         Account account = new Account(currencyType);
-        if (accounts.isEmpty()){
+
+        if (accounts.isEmpty()) {
             clientHandler.setDefaultAccount(account);
         }
+
         accounts.add(account);
     }
 
@@ -55,53 +58,61 @@ public class AccountManager {
     }
 
     public void deposit(PrintWriter printWriter) {
+
         Account account = selectAccount();
+
         if (account == null) {
-            printWriter.println("Deposit failed. No account found.");
+            printWriter.println(DefaultMessages.DEPOSIT_ERROR);
+
         } else {
             DoubleInputScanner valueScanner = new DoubleRangeInputScanner(0, 999999999);
-            valueScanner.setMessage("Enter the value to deposit:");
-            valueScanner.setError("Please insert a valid amount");
+            valueScanner.setMessage(DefaultMessages.DEPOSIT);
+            valueScanner.setError(DefaultMessages.AMOUNT_ERROR);
+
             double value = prompt.getUserInput(valueScanner);
             account.deposit(value);
         }
     }
 
     public double withdraw(Account account) {
+
         DoubleInputScanner valueScanner = new DoubleRangeInputScanner(0, account.getBalance());
-        valueScanner.setMessage("Enter value to debit: ");
-        valueScanner.setError("Your balance is: " + account.getBalance());
+        valueScanner.setMessage(DefaultMessages.DEBIT);
+        valueScanner.setError(DefaultMessages.BALANCE + account.getBalance());
+
         double value = prompt.getUserInput(valueScanner);
         account.withdraw(value);
+
         return value;
     }
 
     public void exchange(PrintWriter printWriter) {
 
-        if (accounts.size() < 2){
-            printWriter.println("You must have at least 2 accounts");
+        if (accounts.size() < 2) {
+            printWriter.println(DefaultMessages.ACCOUNTS_ERROR);
             return;
         }
 
-        printWriter.println("Select Origin Account");
+        printWriter.println(DefaultMessages.ORIGIN_AMOUNT);
         Account sourceAccount = selectAccount();
-        printWriter.println("Select Destination Account");
+        printWriter.println(DefaultMessages.DESTINATION_AMOUNT);
         Account destinationAccount = selectAccount();
-        printWriter.println("Select the Amount to Debit");
+        printWriter.println(DefaultMessages.DEBIT_2);
 
-        if (sourceAccount == null || destinationAccount == null){
-            printWriter.println("Failed to exchange");
+        if (sourceAccount == null || destinationAccount == null) {
+            printWriter.println(DefaultMessages.EXCHANGE_ERROR);
             return;
         }
 
         double amount = withdraw(sourceAccount);
 
-        if (sourceAccount.getId() == destinationAccount.getId()){
-            printWriter.println("Failed");
+        if (sourceAccount.getId() == destinationAccount.getId()) {
+            printWriter.println(DefaultMessages.EXCHANGE_ERROR);
             sourceAccount.deposit(amount);
             return;
         }
-        amount = exchangeManager.getRates(sourceAccount.getCurrencyType(),destinationAccount.getCurrencyType()) * amount;
+
+        amount = exchangeManager.getRates(sourceAccount.getCurrencyType(), destinationAccount.getCurrencyType()) * amount;
         destinationAccount.deposit(amount);
     }
 
@@ -116,8 +127,10 @@ public class AccountManager {
     }
 
     public Account selectAccount() {
+
         String[] options = new String[accounts.size() + 1];
         Account[] accountIndex = new Account[accounts.size()];
+
         if (accountIndex.length == 0) {
             return null;
         }
@@ -126,8 +139,10 @@ public class AccountManager {
             accountIndex[i] = (Account) accounts.toArray()[i];
             options[i] = accountIndex[i].toString();
         }
+
         options[options.length - 1] = "Go back";
         MenuInputScanner menu = new MenuInputScanner(options);
+
         int id = prompt.getUserInput(menu);
 
         if (id == options.length) {

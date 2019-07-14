@@ -19,7 +19,7 @@ public class ClientHandler {
     private String username;
     private Account defaultAccount;
 
-    public ClientHandler(String username,Socket socket) {
+    public ClientHandler(String username, Socket socket) {
         this.username = username;
         this.socket = socket;
         prompt = getPrompt();
@@ -31,33 +31,32 @@ public class ClientHandler {
         return username;
     }
 
-    public void run() {
+    void run() {
         prompt = getPrompt();
         accountManager.setPrompt(prompt);
         accounts = accountManager.getAccounts();
         clientMenu.start();
     }
 
-    public AccountManager getAccountManager() {
+    AccountManager getAccountManager() {
         return accountManager;
     }
 
     public Prompt getPrompt() {
         Prompt prompt = null;
+
         try {
-            prompt = new Prompt(socket.getInputStream(), new PrintStream(socket.getOutputStream(),true));
+            prompt = new Prompt(socket.getInputStream(), new PrintStream(socket.getOutputStream(), true));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return prompt;
     }
 
-    public void setSocket(Socket socket) {
+    void setSocket(Socket socket) {
         this.socket = socket;
-    }
-
-    public HashSet<Account> getAccounts() {
-        return accounts;
     }
 
     public void deposit() {
@@ -68,12 +67,15 @@ public class ClientHandler {
         accountManager.exchange(getPrintWriter());
     }
 
-    public PrintWriter getPrintWriter(){
+    PrintWriter getPrintWriter() {
+
         try {
-            return new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true);
+            return new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
@@ -81,7 +83,7 @@ public class ClientHandler {
         this.defaultAccount = defaultAccount;
     }
 
-    public void changeDefaultAccount(){
+    public void changeDefaultAccount() {
         defaultAccount = accountManager.selectAccount();
     }
 
@@ -90,19 +92,19 @@ public class ClientHandler {
     }
 
     public void openAccount() {
-        accountManager.makeAccount(getPrintWriter(), accountManager.getCurrencyMenu().chooseCurrency(),this);
+        accountManager.makeAccount(getPrintWriter(), accountManager.getCurrencyMenu().chooseCurrency(), this);
     }
 
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public Account getDefaultAccount() {
+    Account getDefaultAccount() {
         return defaultAccount;
     }
 
-    public void payment(){
-        Server.transfer(this);
+    public void payment() {
+        StartServer.transfer(this);
+    }
+
+    boolean hasAccount() {
+        return getAccountManager().getAccounts().size() > 0;
     }
 
 }

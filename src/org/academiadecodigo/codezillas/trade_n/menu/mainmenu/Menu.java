@@ -2,21 +2,22 @@ package org.academiadecodigo.codezillas.trade_n.menu.mainmenu;
 
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
+import org.academiadecodigo.codezillas.trade_n.DefaultMessages;
 import org.academiadecodigo.codezillas.trade_n.menu.mainmenu.mainmenustrategy.MenuType;
 import org.academiadecodigo.codezillas.trade_n.server.RegisterManager;
 
 public class Menu {
 
     private Prompt prompt;
-    private RegisterManager registManager;
-    private MenuInputScanner menuInputScanner;
+    private RegisterManager registryManager;
 
-    public Menu(Prompt prompt, RegisterManager registManager){
+    public Menu(Prompt prompt, RegisterManager registryManager) {
         this.prompt = prompt;
-        this.registManager = registManager;
+        this.registryManager = registryManager;
+
     }
 
-    public void start(){
+    public void start() {
 
         while (true) {
             String[] options = {
@@ -25,9 +26,9 @@ public class Menu {
                     "Quit"
             };
 
-            menuInputScanner = new MenuInputScanner(options);
-            menuInputScanner.setMessage("Welcome to Trade-N Server!\n\nSelect your option:");
-            MenuType.values()[prompt.getUserInput(menuInputScanner) - 1].menuBehaviour.doOperation(prompt,registManager);
+            MenuInputScanner menuInputScanner = new MenuInputScanner(options);
+            menuInputScanner.setMessage(DefaultMessages.WELCOME_2);
+            MenuType.values()[prompt.getUserInput(menuInputScanner) - 1].menuBehaviour.doOperation(prompt, registryManager);
         }
     }
 }

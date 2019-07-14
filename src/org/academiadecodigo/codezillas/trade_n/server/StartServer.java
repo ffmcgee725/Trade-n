@@ -1,6 +1,7 @@
 package org.academiadecodigo.codezillas.trade_n.server;
 
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
+import org.academiadecodigo.codezillas.trade_n.DefaultMessages;
 import org.academiadecodigo.codezillas.trade_n.account.Account;
 
 import java.io.IOException;
@@ -10,19 +11,18 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server {
+public class StartServer {
 
     private ServerSocket serverSocket;
-    private ExecutorService service;
+    private ExecutorService threadPool;
 
-    public Server(int port) throws IOException {
+    public StartServer(int port) throws IOException {
         this.serverSocket = new ServerSocket(port);
-        this.service = Executors.newCachedThreadPool();
+        this.threadPool = Executors.newCachedThreadPool();
     }
 
     public void start() {
-
-        RegisterManager.setRegisters(new ConcurrentHashMap<>());
+        RegisterManager.setRegistries(new ConcurrentHashMap<>());
         while (true) {
             waitConnection();
         }
@@ -31,18 +31,17 @@ public class Server {
     private void waitConnection() {
         try {
             Socket clientSocket = serverSocket.accept();
-
-            service.submit(new RegisterManager(clientSocket));
+            threadPool.submit(new RegisterManager(clientSocket));
 
         } catch (IOException e) {
             System.err.println("Error establishing connection: " + e.getMessage());
         }
     }
 
-    public static void transfer(ClientHandler clientHandler) {
+    static void transfer(ClientHandler clientHandler) {
 
-        if (clientHandler.getAccountManager().getAccounts().size() < 1) {
-            clientHandler.getPrintWriter().println("You must have at least 1 account to make transfers");
+        if (!clientHandler.hasAccount()) {
+            clientHandler.getPrintWriter().println(DefaultMessages.NO_ACCOUNTS_ERROR);
             return;
         }
 
@@ -56,22 +55,23 @@ public class Server {
 
             double amount = clientHandler.getAccountManager().withdraw(account);
             StringInputScanner stringInputScanner = new StringInputScanner();
-            stringInputScanner.setMessage("Insert username: ");
+            stringInputScanner.setMessage(DefaultMessages.INSERT_USERNAME);
             String username = clientHandler.getPrompt().getUserInput(stringInputScanner);
 
-            if (!RegisterManager.getRegisters().containsKey(username)
-                    || (RegisterManager.getRegisters().get(username).getClientHandler().getAccountManager().getAccounts().size() < 1)) {
+            if (!RegisterManager.getRegistries().containsKey(username)
+                    || (RegisterManager.getRegistries().get(username).getClientHandler().getAccountManager().getAccounts().size() < 1)) {
 
-                clientHandler.getPrintWriter().println("Failed to exchange!");
+                clientHandler.getPrintWriter().println(DefaultMessages.EXCHANGE_ERROR);
                 account.deposit(amount);
                 return;
             }
 
-            amount = clientHandler.getAccountManager().getExchangeManager().getRates(account.getCurrencyType(),
-                    RegisterManager.getRegisters().get(username).getClientHandler().getDefaultAccount().getCurrencyType()) * amount;
+            amount = clientHandler.getAccountManager().getExchangeManager()
+                    .getRates(account.getCurrencyType(),
+                    RegisterManager.getRegistries().get(username).getClientHandler()
+                            .getDefaultAccount().getCurrencyType()) * amount;
 
-            RegisterManager.getRegisters().get(username).getClientHandler().getDefaultAccount().deposit(amount);
+            RegisterManager.getRegistries().get(username).getClientHandler().getDefaultAccount().deposit(amount);
         }
-
     }
 }

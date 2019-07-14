@@ -10,17 +10,17 @@ public class Account {
     private final int id;
     private double balance;
 
-    public Account(CurrencyType currencyType) {
+    Account(CurrencyType currencyType) {
         numberOfAccounts++;
         id = numberOfAccounts;
         this.currencyType = currencyType;
     }
 
-    public double getBalance() {
+    double getBalance() {
         return balance;
     }
 
-    public int getId() {
+    int getId() {
         return id;
     }
 
@@ -32,7 +32,7 @@ public class Account {
         balance += amount;
     }
 
-    public void withdraw(double amount) {
+    void withdraw(double amount) {
         balance -= amount;
     }
 

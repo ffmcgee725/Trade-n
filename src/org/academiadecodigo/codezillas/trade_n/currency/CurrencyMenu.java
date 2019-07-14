@@ -12,7 +12,9 @@ public class CurrencyMenu {
     }
 
     public CurrencyType chooseCurrency() {
+
         String[] options = new String[CurrencyType.values().length];
+
         for (int i = 0; i < CurrencyType.values().length; i++) {
             options[i] = CurrencyType.values()[i].getCurrencyName();
         }

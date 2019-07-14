@@ -3,6 +3,7 @@ package org.academiadecodigo.codezillas.trade_n.server;
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.string.PasswordInputScanner;
 import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
+import org.academiadecodigo.codezillas.trade_n.DefaultMessages;
 import org.academiadecodigo.codezillas.trade_n.menu.mainmenu.Menu;
 
 import java.io.IOException;
@@ -14,12 +15,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class RegisterManager implements Runnable {
 
-    private static ConcurrentHashMap<String, Register> registers;
+    private static ConcurrentHashMap<String, Register> registries;
     private Socket socket;
     private Prompt prompt;
     private PrintWriter printWriter;
 
-    public RegisterManager(Socket socket){
+    RegisterManager(Socket socket) {
         this.socket = socket;
     }
 
@@ -28,75 +29,83 @@ public class RegisterManager implements Runnable {
         start();
     }
 
-    public void start(){
+    private void start() {
+
         try {
             prompt = new Prompt(socket.getInputStream(), new PrintStream(socket.getOutputStream()));
-            printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true);
+            printWriter = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Menu menu = new Menu(prompt,this);
+
+        Menu menu = new Menu(prompt, this);
         menu.start();
     }
 
-    public void logIn(){
-        printWriter.println("Login");
+    public void logIn() {
+
+        printWriter.println(DefaultMessages.LOGIN);
         StringInputScanner stringInputScanner = new StringInputScanner();
-        stringInputScanner.setMessage("Introduze your username: ");
+        stringInputScanner.setMessage(DefaultMessages.USERNAME);
         String username = prompt.getUserInput(stringInputScanner);
 
-        if (!registers.containsKey(username)){
-            printWriter.println(username + "doesn't exist");
+        if (!registries.containsKey(username)) {
+            printWriter.println(username + DefaultMessages.USERNAME_ERROR);
             return;
         }
 
         PasswordInputScanner passwordInputScanner = new PasswordInputScanner();
-        passwordInputScanner.setMessage("Introduze your password: ");
+        passwordInputScanner.setMessage(DefaultMessages.PASSWORD);
         String password = prompt.getUserInput(passwordInputScanner);
 
-        if (registers.get(username).getPassword().equals(password)){
-            printWriter.println("Login Sucessfull!");
-            registers.get(username).getClientHandler().setSocket(socket);
-            registers.get(username).getClientHandler().run();
+        if (registries.get(username).getPassword().equals(password)) {
+            printWriter.println(DefaultMessages.SUCCESSFUL_LOGIN);
+            registries.get(username).getClientHandler().setSocket(socket);
+            registries.get(username).getClientHandler().run();
+            return;
         }
+
+        printWriter.println(DefaultMessages.PASSWORD_ERROR);
     }
 
-    public void register(){
+    public void register() {
 
         StringInputScanner stringInputScanner = new StringInputScanner();
-        stringInputScanner.setMessage("Introduze your username: ");
+        stringInputScanner.setMessage(DefaultMessages.USERNAME);
         String username = prompt.getUserInput(stringInputScanner);
 
-        if (registers.containsKey(username)){
-            printWriter.println(username + " already exists in our database");
+        if (registries.containsKey(username)) {
+            printWriter.println(username + DefaultMessages.USERNAME_ERROR_2);
             return;
         }
 
         PasswordInputScanner passwordInputScanner = new PasswordInputScanner();
-        passwordInputScanner.setMessage("Introduce your password: ");
+        passwordInputScanner.setMessage(DefaultMessages.PASSWORD);
         String password = prompt.getUserInput(passwordInputScanner);
 
-        registers.put(username,new Register(username,password,socket));
-        printWriter.println("Register Successful!");
-        printWriter.println("Welcome to TRADE-N!");
+        registries.put(username, new Register(username, password, socket));
+        printWriter.println(DefaultMessages.SUCCESSFUL_REGISTER);
+        printWriter.println(DefaultMessages.WELCOME);
 
-        registers.get(username).getClientHandler().setSocket(socket);
-        registers.get(username).getClientHandler().run();
+        registries.get(username).getClientHandler().setSocket(socket);
+        registries.get(username).getClientHandler().run();
     }
 
-    public void leave(){
+    public void leave() {
         try {
             socket.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static ConcurrentHashMap<String, Register> getRegisters() {
-        return registers;
+    static ConcurrentHashMap<String, Register> getRegistries() {
+        return registries;
     }
 
-    public static void setRegisters(ConcurrentHashMap<String, Register> registers) {
-        RegisterManager.registers = registers;
+    static void setRegistries(ConcurrentHashMap<String, Register> registries) {
+        RegisterManager.registries = registries;
     }
 }
