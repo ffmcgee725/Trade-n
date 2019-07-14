@@ -97,6 +97,11 @@ public class AccountManager {
         options[options.length - 1] = "Go back";
         MenuInputScanner menu = new MenuInputScanner(options);
         int id = prompt.getUserInput(menu);
+
+        if (id == options.length){
+            return null;
+        }
+
         return accountIndex[id-1];
     }
 }
